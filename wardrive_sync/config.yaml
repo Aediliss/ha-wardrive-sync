@@ -1,0 +1,43 @@
+name: Wardrive Sync
+version: "0.1.0"
+slug: wardrive_sync
+description: Receives Wardrive Go "Sync to a URL" backups and loads them into PostgreSQL with full change history.
+url: https://github.com/Aediliss/ha-wardrive-sync
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+# No host ports. The Cloudflared add-on reaches this container on the internal
+# Supervisor network at http://local-wardrive-sync:8099
+ports: {}
+map:
+  - type: share
+    read_only: false
+options:
+  auth_token: ""
+  db_host: "77b2833f-timescaledb"
+  db_port: 5432
+  db_name: wardrive
+  db_user: wardrive
+  db_password: ""
+  db_admin_user: postgres
+  db_admin_password: ""
+  archive_dir: /share/wardrive
+  keep_archives_days: 0
+  max_upload_mb: 95
+  log_level: info
+schema:
+  auth_token: password
+  db_host: str
+  db_port: port
+  db_name: str
+  db_user: str
+  db_password: password
+  db_admin_user: str
+  db_admin_password: password?
+  archive_dir: str
+  keep_archives_days: int(0,)
+  max_upload_mb: int(1,95)
+  log_level: list(debug|info|warning)
